@@ -1,0 +1,131 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #263238;
+	color: #d8c17a;
+	margin: 0rem 4rem;
+}
+
+#pageHeader {
+	font-family: "Noto Sans", sans-serif;
+	font-weight: bolder;
+	height: 5rem;
+	margin: 2rem 8rem;
+	letter-spacing: 0.2rem;
+	background-color: #263238;
+	color: #d8c17a;
+	text-align: center;
+	border-bottom: double 1px #d8c17a;
+	padding-bottom: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+/* Creator container styles */
+
+#creatorContainer {
+	display: flex;
+	justify-content: space-around;
+}
+
+/* Meme contatiner styles */
+
+#memePlaceholder {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 2rem 1rem;
+}
+
+#memePlaceholder > img {
+	height: 30rem;
+	width: 35rem;
+	border-radius: 5%;
+}
+
+#memePlaceholder > button {
+	position: relative;
+	bottom: 2rem;
+}
+
+#topText {
+	position: relative;
+	bottom: 28.75rem;
+}
+
+#bottomText {
+	position: relative;
+	bottom: 5rem;
+}
+
+#memeHeader {
+	text-align: center;
+}
+
+/* Form Styles */
+
+#memeForm {
+	position: relative;
+	right: 4%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+#memeForm > div {
+	display: flex;
+	flex-direction: column;
+	margin-top: -2rem;
+	margin-bottom: -2rem;
+}
+
+#memeForm > div > label {
+	font-size: 1.2rem;
+}
+
+.inputBox {
+	all: unset;
+	margin: 1rem 0rem;
+	font-size: 1.2rem;
+	height: 3rem;
+	border-radius: 15%;
+	padding-left: 0.5rem;
+	border: none;
+	background-color: #4d6470;
+}
+
+.inputBox::placeholder {
+	font-size: 1.2rem;
+	color: rgb(172, 172, 172);
+}
+
+.colorInput {
+	text-align: center;
+}
+
+/* Button styles */
+
+.button {
+	all: unset;
+	border: none;
+	text-align: center;
+	font-size: 1.2rem;
+	background-color: #d8c17a;
+	color: #1c2529;
+	height: 3rem;
+	width: 10rem;
+	border-radius: 30%;
+	transition: ease-in-out 0.3s;
+}
+
+.button:hover {
+	background-color: #a3925d;
+	cursor: pointer;
+}
