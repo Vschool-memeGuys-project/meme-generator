@@ -1,41 +1,46 @@
 import React from 'react';
 import Meme from "./Meme"
+import Draggable from "react-draggable"
 const axios = require("axios")
 
 class App extends React.Component {
   constructor() {
     super()
     this.state = {
+        key: 0,
         topText: "Top Text",
-        topTextColor: "#000000",
+        topTextColor: "#ffffff",
+        topTextPositionY: 475,
+        topTextPositionX: 0,
         bottomText: "Bottom Text",
-        bottomTextColor: "#000000",
+        bottomTextColor: "#ffffff",
+        bottomTextPositionY: 150,
+        bottomTextPositionX: 0,
         src: "",
+        editing: false,
         loading: false
     }
     /*
     localStorage.memeKey = 0;
     localStorage.memeList = JSON.stringify([]);
     */
-    console.log(`before initialization: ${localStorage.memeList}`)
-    console.log(`meme key: ${localStorage.memeKey}`)
+    
+    //localStorage.clear()
+
     if (localStorage.memeKey === undefined || localStorage.memeKey === null || !isNaN(localStorage.memeKey)) {
         localStorage.memeKey = 0;
-        console.log(`meme key initialization: ${localStorage.memeKey}`)
     }
     if (localStorage.memeList === undefined || localStorage.memeList === null) {
         localStorage.memeList = JSON.stringify([]);
-        this.memeList = [];
-        console.log(`memelist initializaiton: ${localStorage.memeList}`)
     }
     this.memeList = JSON.parse(localStorage.memeList)
-    console.log(`this.memelist: ${this.memeList}`)
-    
-    
 
     this.handleChange = this.handleChange.bind(this)
     this.createMeme = this.createMeme.bind(this)
     this.getMeme = this.getMeme.bind(this)
+    this.editMeme = this.editMeme.bind(this)
+    this.handleDragTop = this.handleDragTop.bind(this)
+    this.handleDragBottom = this.handleDragBottom.bind(this)
   }
 
   //changes state whenever there is an update
@@ -46,6 +51,24 @@ class App extends React.Component {
     })
   }
 
+  handleDragTop(event, drag) {
+    console.log(event, drag)
+    console.log(`topTextPosX: ${this.state.topTextPositionX}, topTextPosY: ${this.state.topTextPositionY}`)
+    this.setState(prevState => { return {
+      topTextPositionX: prevState.topTextPositionX + drag.deltaX,
+      topTextPositionY: prevState.topTextPositionY + -(drag.deltaY)
+    }})
+  }
+
+  handleDragBottom(event, drag) {
+    console.log(event, drag)
+    console.log(`bottomTextPosX: ${this.state.bottomTextPositionX}, bottomTextPosY: ${this.state.bottomTextPositionY}`)
+    this.setState(prevState => { return {
+      bottomTextPositionX: prevState.bottomTextPositionX + drag.deltaX,
+      bottomTextPositionY: prevState.bottomTextPositionY + -(drag.deltaY)
+    }})
+  }
+  
   //performs axios request to get an image url and sets the state
   getMeme() {
     this.setState({ loading: true })
@@ -67,41 +90,95 @@ class App extends React.Component {
   createMeme(event) {
     event.preventDefault();
     
-    localStorage.memeKey++
-    this.memeList.push({ 
-      key: localStorage.memeKey, 
-      topText: this.state.topText, 
-      topTextColor: this.state.topTextColor, 
-      bottomText: this.state.bottomText, 
-      bottomTextColor: this.state.bottomTextColor, 
-      src: this.state.src 
-    })
+    if (this.state.editing) {
+      const index = this.memeList.findIndex(meme => meme.key === this.state.key)
+      this.memeList.splice(index, 1, { 
+        key: this.state.key, 
+        topText: this.state.topText, 
+        topTextColor: this.state.topTextColor,
+        topTextPositionX: this.state.topTextPositionX,
+        topTextPositionY: this.state.topTextPositionY,
+        bottomText: this.state.bottomText, 
+        bottomTextColor: this.state.bottomTextColor,
+        bottomTextPositionX: this.state.bottomTextPositionX,
+        bottomTextPositionY: this.state.bottomTextPositionY,
+        src: this.state.src 
+      })
+      console.log(`topTextPosX: ${this.state.topTextPositionX}, topTextPosY: ${this.state.topTextPositionY}, bottomTextPosX: ${this.state.bottomTextPositionX}, bottomTextPosY: ${this.state.bottomTextPositionY}`)
+      this.setState({ editing: false })
+    }
+    else {
+      if (this.memeList.length > 0) {
+        localStorage.memeKey = this.memeList[this.memeList.length - 1].key
+      }
+
+      localStorage.memeKey++
+      this.memeList.push({ 
+        key: localStorage.memeKey, 
+        topText: this.state.topText, 
+        topTextColor: this.state.topTextColor, 
+        topTextPositionX: this.state.topTextPositionX,
+        topTextPositionY: this.state.topTextPositionY,
+        bottomText: this.state.bottomText, 
+        bottomTextColor: this.state.bottomTextColor, 
+        bottomTextPositionX: this.state.bottomTextPositionX,
+        bottomTextPositionY: this.state.bottomTextPositionY,
+        src: this.state.src 
+      })
+    }
     
-    console.log(`this.memelist after creatememe runs: ${this.memeList}`)
     localStorage.memeList = JSON.stringify(this.memeList)
-    console.log(`localstorage memelist after creatememe runs: ${localStorage.memeList}`)
 
     this.setState( {
       topText: "Top Text", 
-      topTextColor: "#000000", 
+      topTextColor: "#ffffff", 
       bottomText: "Bottom Text", 
-      bottomTextColor: "#000000" 
+      bottomTextColor: "#ffffff",
+      topTextPositionX: 0,
+      topTextPositionY: 475,
+      bottomTextPositionX: 0,
+      bottomTextPositionY: 150
     } )
 
     this.getMeme()
   }
 
-  /*
-  editMeme(index) {
-    const meme = JSON.parse(localStorage.memeList)[index]
-    this.setState({ topText: meme.topText, topTextColor: meme.topTextColor, bottomText: meme.bottomText, bottomTextColor: meme.bottomTextColor, src: meme.src })
+  deleteMeme(memeKey) {
+    const index = this.memeList.findIndex(meme => meme.key === memeKey)
+    this.memeList.splice(index, 1)
+    localStorage.memeList = JSON.stringify(this.memeList)
+    this.forceUpdate()
   }
-  */
+  
+  editMeme(memeKey) {
+    const index = this.memeList.findIndex(meme => meme.key === memeKey)
+    const meme = this.memeList[index]
+    console.log(`edit topTextPosX: ${meme.topTextPositionX}, edit topTextPosY: ${meme.topTextPositionY}, edit bottomTextPosX: ${meme.bottomTextPositionX}, edit bottomTextPosY: ${meme.bottomTextPositionY}`)
+    this.setState({ key: meme.key, topText: meme.topText, topTextColor: meme.topTextColor, topTextPositionX: meme.topTextPositionX, topTextPositionY: meme.topTextPositionY, bottomText: meme.bottomText, bottomTextColor: meme.bottomTextColor, bottomTextPositionX: meme.bottomTextPositionX, bottomTextPositionY: meme.bottomTextPositionY, src: meme.src, editing: true })
+    window.scrollTo(0, 0)
+  }
   
   render () {
-    const topTextStyles = { color: this.state.topTextColor }
-    const bottomTextStyles = { color: this.state.bottomTextColor }
-    const memes = this.memeList.map(meme => <div><Meme key={meme.key} topText={meme.topText} topTextColor={meme.topTextColor} bottomText={meme.bottomText} bottomTextColor={meme.bottomTextColor} src={meme.src} /><button /*id={meme.key} onClick={this.editMeme} */>Edit Meme</button></div>)
+    const topTextStyles = { color: this.state.topTextColor, bottom: this.state.topTextPositionY, left: this.state.topTextPositionX }
+    const bottomTextStyles = { color: this.state.bottomTextColor, bottom: this.state.bottomTextPositionY, left: this.state.bottomTextPositionX }
+    const memes = this.memeList.map(meme => 
+      <div>
+        <Meme 
+          key={meme.key}
+          topText={meme.topText}
+          topTextColor={meme.topTextColor}
+          topTextPositionX={meme.topTextPositionX}
+          topTextPositionY={meme.topTextPositionY}
+          bottomText={meme.bottomText}
+          bottomTextColor={meme.bottomTextColor}
+          bottomTextPositionX={meme.bottomTextPositionX}
+          bottomTextPositionY={meme.bottomTextPositionY}
+          src={meme.src}
+        />
+        <button className="button" onClick={() => this.editMeme(meme.key)} >Edit Meme</button>
+        <button className="button" onClick={() => this.deleteMeme(meme.key)} >Delete Meme</button>
+      </div>
+    )
 
     if (!this.state.loading) {
       return (
@@ -113,8 +190,8 @@ class App extends React.Component {
           <div id="creatorContainer">
             <div id="memePlaceholder">
               <img src={this.state.src} alt="meme"></img>
-              <h2 id="topText" style={topTextStyles}>{this.state.topText}{'\u00A0'}</h2>
-              <h2 id="bottomText" style={bottomTextStyles}>{this.state.bottomText}{'\u00A0'}</h2>
+              <Draggable axis="both" onDrag={this.handleDragTop}><h2 id="topText" style={topTextStyles}>{this.state.topText}{'\u00A0'}</h2></Draggable>
+              <Draggable axis="both" onDrag={this.handleDragBottom}><h2 id="bottomText" style={bottomTextStyles}>{this.state.bottomText}{'\u00A0'}</h2></Draggable>
               <button className='button' onClick={this.getMeme}>Change Image</button>
             </div>
 
