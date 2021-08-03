@@ -6,14 +6,16 @@
 body {
 	background-color: #263238;
 	color: #d8c17a;
-	margin: 0rem 4rem;
+	margin: 0rem auto;
+	text-align: center;
 }
 
 #pageHeader {
 	font-family: "Noto Sans", sans-serif;
 	font-weight: bolder;
+	font-size: 2.3rem;
 	height: 5rem;
-	margin: 2rem 8rem;
+	margin: 2rem 9rem 3.5rem 9rem;
 	letter-spacing: 0.2rem;
 	background-color: #263238;
 	color: #d8c17a;
@@ -30,7 +32,8 @@ body {
 
 #creatorContainer {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-evenly;
+	margin-bottom: -0.5rem;
 }
 
 /* Meme container styles */
@@ -40,7 +43,8 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin: 2rem 1rem;
+	margin: 0rem 1rem;
+	margin-bottom: -4rem;
 }
 
 #memePlaceholder > img {
@@ -51,23 +55,27 @@ body {
 
 #memePlaceholder > button {
 	position: relative;
-	bottom: 2rem;
+	bottom: 6.5rem;
 }
 
 #topText {
 	position: relative;
-	font-size: 50px;
+	font-size: 3rem;
+	max-width: 31rem;
 	font-family: "Noto Sans", sans-serif;
 }
 
 #bottomText {
 	position: relative;
-	font-size: 50px;
+	font-size: 3rem;
+	max-width: 31rem;
 	font-family: "Noto Sans", sans-serif;
 }
 
 #memeHeader {
 	text-align: center;
+	margin-bottom: 1.8rem;
+	font-size: 2.3rem;
 	font-family: "Noto Sans", sans-serif;
 }
 
@@ -76,6 +84,7 @@ body {
 #memeForm {
 	position: relative;
 	right: 4%;
+	bottom: 2.5rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -85,8 +94,8 @@ body {
 #memeForm > div {
 	display: flex;
 	flex-direction: column;
-	margin-top: -2rem;
-	margin-bottom: -2rem;
+	margin-top: -5rem;
+	margin-bottom: -3rem;
 }
 
 #memeForm > div > label {
@@ -95,6 +104,7 @@ body {
 
 .inputBox {
 	all: unset;
+	text-align: left;
 	margin: 1rem 0rem;
 	font-size: 1.2rem;
 	height: 3rem;
@@ -131,6 +141,27 @@ body {
 }
 
 .button:hover {
+	background-color: #a3925d;
+	cursor: pointer;
+}
+
+.savedButton {
+	all: unset;
+	position: relative;
+	bottom: 2.7rem;
+	margin: -0.3rem 2rem 0.5rem 2rem;
+	border: none;
+	text-align: center;
+	font-size: 1.2rem;
+	background-color: #d8c17a;
+	color: #1c2529;
+	height: 3rem;
+	width: 10rem;
+	border-radius: 30%;
+	transition: ease-in-out 0.3s;
+}
+
+.savedButton:hover {
 	background-color: #a3925d;
 	cursor: pointer;
 }
