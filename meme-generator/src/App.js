@@ -175,8 +175,10 @@ class App extends React.Component {
           bottomTextPositionY={meme.bottomTextPositionY}
           src={meme.src}
         />
-        <button className="button" onClick={() => this.editMeme(meme.key)} >Edit Meme</button>
-        <button className="button" onClick={() => this.deleteMeme(meme.key)} >Delete Meme</button>
+        <div >
+          <button className="savedButton" onClick={() => this.editMeme(meme.key)} >Edit Meme</button>
+          <button className="savedButton" onClick={() => this.deleteMeme(meme.key)} >Delete Meme</button>
+        </div>
       </div>
     )
 
@@ -240,8 +242,9 @@ class App extends React.Component {
                 />
               </label>
               </div>
-
-              <button className='button' onClick={this.createMeme}>Save Meme</button>
+              <div>
+                <button className='button' onClick={this.createMeme}>Save Meme</button>
+              </div>
             </form>
             
           </div>
@@ -264,7 +267,6 @@ class App extends React.Component {
           <div id='navBar'>
             <h1 id="pageHeader">The Meme <br></br> Machine</h1>
           </div>
-
           <div id="creatorContainer">
             <div id="memePlaceholder">
               <h1>Loading...</h1>
