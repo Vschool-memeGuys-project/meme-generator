@@ -10,12 +10,16 @@ class App extends React.Component {
         key: 0,
         topText: "Top Text",
         topTextColor: "#ffffff",
-        topTextPositionY: 475,
+        topTextPositionY: 550,
         topTextPositionX: 0,
+        topTextDeltaX: 0,
+        topTextDeltaY: 0,
         bottomText: "Bottom Text",
         bottomTextColor: "#ffffff",
         bottomTextPositionY: 150,
         bottomTextPositionX: 0,
+        bottomTextDeltaX: 0,
+        bottomTextDeltaY: 0,
         src: "",
         editing: false,
         loading: false
@@ -53,10 +57,12 @@ class App extends React.Component {
 
   handleDragTop(event, drag) {
     console.log(event, drag)
-    console.log(`topTextPosX: ${this.state.topTextPositionX}, topTextPosY: ${this.state.topTextPositionY}`)
+    console.log(`topTextDeltaX: ${this.state.topTextDeltaX}, topTextDeltaY: ${this.state.topTextDeltaY}`)
     this.setState(prevState => { return {
-      topTextPositionX: prevState.topTextPositionX + drag.deltaX,
-      topTextPositionY: prevState.topTextPositionY + -(drag.deltaY)
+      topTextPositionX: prevState.topTextPositionX,
+      topTextDeltaX: prevState.topTextDeltaX + drag.deltaX,
+      topTextPositionY: prevState.topTextPositionY,
+      topTextDeltaY: prevState.topTextDeltaY + -(drag.deltaY)
     }})
   }
 
@@ -64,8 +70,10 @@ class App extends React.Component {
     console.log(event, drag)
     console.log(`bottomTextPosX: ${this.state.bottomTextPositionX}, bottomTextPosY: ${this.state.bottomTextPositionY}`)
     this.setState(prevState => { return {
-      bottomTextPositionX: prevState.bottomTextPositionX + drag.deltaX,
-      bottomTextPositionY: prevState.bottomTextPositionY + -(drag.deltaY)
+      bottomTextPositionX: prevState.bottomTextPositionX,
+      bottomTextDeltaX: prevState.bottomTextDeltaX + drag.deltaX,
+      bottomTextPositionY: prevState.bottomTextPositionY,
+      bottomTextDeltaY: prevState.bottomTextDeltaY + -(drag.deltaY)
     }})
   }
   
@@ -96,12 +104,12 @@ class App extends React.Component {
         key: this.state.key, 
         topText: this.state.topText, 
         topTextColor: this.state.topTextColor,
-        topTextPositionX: this.state.topTextPositionX,
-        topTextPositionY: this.state.topTextPositionY,
+        topTextPositionX: this.state.topTextPositionX + this.state.topTextDeltaX,
+        topTextPositionY: this.state.topTextPositionY + this.state.topTextDeltaY,
         bottomText: this.state.bottomText, 
         bottomTextColor: this.state.bottomTextColor,
-        bottomTextPositionX: this.state.bottomTextPositionX,
-        bottomTextPositionY: this.state.bottomTextPositionY,
+        bottomTextPositionX: this.state.bottomTextPositionX + this.state.bottomTextDeltaX,
+        bottomTextPositionY: this.state.bottomTextPositionY + this.state.bottomTextDeltaY,
         src: this.state.src 
       })
       console.log(`topTextPosX: ${this.state.topTextPositionX}, topTextPosY: ${this.state.topTextPositionY}, bottomTextPosX: ${this.state.bottomTextPositionX}, bottomTextPosY: ${this.state.bottomTextPositionY}`)
@@ -117,12 +125,12 @@ class App extends React.Component {
         key: localStorage.memeKey, 
         topText: this.state.topText, 
         topTextColor: this.state.topTextColor, 
-        topTextPositionX: this.state.topTextPositionX,
-        topTextPositionY: this.state.topTextPositionY,
+        topTextPositionX: this.state.topTextPositionX + this.state.topTextDeltaX,
+        topTextPositionY: this.state.topTextPositionY + this.state.topTextDeltaY,
         bottomText: this.state.bottomText, 
         bottomTextColor: this.state.bottomTextColor, 
-        bottomTextPositionX: this.state.bottomTextPositionX,
-        bottomTextPositionY: this.state.bottomTextPositionY,
+        bottomTextPositionX: this.state.bottomTextPositionX + this.state.bottomTextDeltaX,
+        bottomTextPositionY: this.state.bottomTextPositionY + this.state.bottomTextDeltaY,
         src: this.state.src 
       })
     }
@@ -135,9 +143,13 @@ class App extends React.Component {
       bottomText: "Bottom Text", 
       bottomTextColor: "#ffffff",
       topTextPositionX: 0,
-      topTextPositionY: 475,
+      topTextPositionY: 550,
+      topTextDeltaX: 0,
+      topTextDeltaY: 0,
       bottomTextPositionX: 0,
-      bottomTextPositionY: 150
+      bottomTextPositionY: 150,
+      bottomTextDeltaX: 0,
+      bottomTextDeltaY: 0
     } )
 
     this.getMeme()
@@ -184,7 +196,7 @@ class App extends React.Component {
 
     if (!this.state.loading) {
       return (
-        <div>
+        <div id="mainContainer">
           <div id='navBar'>
             <h1 id="pageHeader">The Meme <br></br> Machine</h1>
           </div>
@@ -194,7 +206,7 @@ class App extends React.Component {
               <img src={this.state.src} alt="meme"></img>
               <Draggable axis="both" onDrag={this.handleDragTop}><h2 id="topText" style={topTextStyles}>{this.state.topText}{'\u00A0'}</h2></Draggable>
               <Draggable axis="both" onDrag={this.handleDragBottom}><h2 id="bottomText" style={bottomTextStyles}>{this.state.bottomText}{'\u00A0'}</h2></Draggable>
-              <button className='button' onClick={this.getMeme}>Change Image</button>
+              <button id="changeMemeButton" className='button' onClick={this.getMeme}>Change Image</button>
             </div>
 
             <form id="memeForm">
@@ -242,7 +254,7 @@ class App extends React.Component {
                 />
               </label>
               </div>
-              <div>
+              <div id="saveMemeButton">
                 <button className='button' onClick={this.createMeme}>Save Meme</button>
               </div>
             </form>
@@ -251,7 +263,7 @@ class App extends React.Component {
 
           
           <br></br>
-          <div>
+          <div id="savedMemeContainer">
             <h1 id="memeHeader">Saved Memes</h1>
             <ul>
               {memes}

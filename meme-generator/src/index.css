@@ -15,7 +15,7 @@ body {
 	font-weight: bolder;
 	font-size: 2.3rem;
 	height: 5rem;
-	margin: 2rem 9rem 3.5rem 9rem;
+	margin: 2rem auto 3.5rem auto;
 	letter-spacing: 0.2rem;
 	background-color: #263238;
 	color: #d8c17a;
@@ -36,6 +36,44 @@ body {
 	margin-bottom: -0.5rem;
 }
 
+@media only screen and (max-width: 900px) {
+	#creatorContainer {
+		display: flex;
+		flex-flow: column;
+	}
+	#savedMemeContainer {
+		margin-top: 30px;
+	}
+	#memeForm {
+		bottom: 0;
+		top: 5px;
+	}
+	#saveMemeButton {
+		margin-top: 25px;
+	}
+}
+
+@media only screen and (max-width: 560px) {
+	#pageHeader {
+		margin-left: 6rem;
+	} 
+	
+	#creatorContainer {
+		margin-left: 6rem;
+	}
+	#savedMemeContainer {
+		margin-left: 6rem;
+	}
+
+	#memePlaceholder > img {
+		width: 100%;
+		height: 100%;
+	}
+	#topText, #bottomText {
+		font-size: 60%;
+	}
+}
+
 /* Meme container styles */
 
 #memePlaceholder {
@@ -48,9 +86,8 @@ body {
 }
 
 #memePlaceholder > img {
-	height: 30rem;
+	height: 35rem;
 	width: 35rem;
-	border-radius: 5%;
 }
 
 #memePlaceholder > button {
@@ -60,15 +97,15 @@ body {
 
 #topText {
 	position: relative;
-	font-size: 3rem;
-	max-width: 31rem;
+	font-size: 300%;
+	min-width: 310px;
 	font-family: "Noto Sans", sans-serif;
 }
 
 #bottomText {
 	position: relative;
-	font-size: 3rem;
-	max-width: 31rem;
+	font-size: 300%;
+	min-width: 310px;
 	font-family: "Noto Sans", sans-serif;
 }
 
@@ -83,8 +120,7 @@ body {
 
 #memeForm {
 	position: relative;
-	right: 4%;
-	bottom: 2.5rem;
+	bottom: 4rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -94,8 +130,6 @@ body {
 #memeForm > div {
 	display: flex;
 	flex-direction: column;
-	margin-top: -5rem;
-	margin-bottom: -3rem;
 }
 
 #memeForm > div > label {
@@ -164,4 +198,10 @@ body {
 .savedButton:hover {
 	background-color: #a3925d;
 	cursor: pointer;
+}
+
+#mainContainer {
+	font-size: 100%;
+	max-width: 1200px;
+	margin: auto;
 }
